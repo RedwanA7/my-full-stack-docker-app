@@ -1,5 +1,8 @@
 name: Deploy to QA
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 on:
   push:
     branches:
@@ -33,12 +36,7 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/qa-backend:latest
 
-      - name: Deploy to QA server
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.QA_HOST }}
-          username: ${{ secrets.QA_USER }}
-          key: ${{ secrets.QA_SSH_KEY }}
-          script: |
-            cd ~/my-full-stack-docker-app
-            docker compose up -d
+      - name: Deployment note
+        run: |
+          echo "Images were built and pushed to Docker Hub."
+          echo "QA server is a local Multipass VM, so deployment is verified manually."
